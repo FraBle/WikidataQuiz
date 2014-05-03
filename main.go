@@ -29,7 +29,7 @@ func main() {
 	router.HandleFunc("/question", handler.QuestionHandler).Methods("GET")
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("../src/github.com/FraBle/WikidataQuiz/static"))))
 	http.Handle("/", router)
-	log.Fatal(http.ListenAndServe(":80", nil))
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
 func chdirToBinary() error {
@@ -41,7 +41,7 @@ func chdirToBinary() error {
 }
 
 func initializeLogger() {
-	if err := os.MkdirAll("../log", os.ModeDir); err != nil {
+	if err := os.MkdirAll("../log", os.ModeDir|os.ModePerm); err != nil {
 		log.Fatalf("Error creating log directory: %v", err)
 	}
 	logfile, err := os.OpenFile("../log/wikidatachat.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
