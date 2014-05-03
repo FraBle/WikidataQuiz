@@ -104,6 +104,9 @@ function drawKeyTaps() {
 
         var opacity = timeLeft;
         var radius = KEYTAP_START_SIZE * timeLeft;
+        if (radius < 0) {
+            radius = 0;
+        }
 
         c.fillStyle = "rgba( 256 , 33 , 0 , " + opacity + ")";
 
@@ -119,8 +122,23 @@ function drawKeyTaps() {
 
 function onScreenTap(gesture) {
     var pos = leapToScene(gesture.position);
+    triggerScreenClick(pos);
     var time = frame.timestamp;
     screenTaps.push([pos[0], pos[1], time]);
+}
+
+function triggerScreenClick(pos) {
+    console.log("triggerScreenClick");
+    console.log(pos);
+    var evt = new MouseEvent("click", {
+        canBubble: true,
+        cancelable: true,
+        view: window,
+        clientX: pos[0],
+        clientY: pos[1],
+    });
+    console.log(evt);
+    window.dispatchEvent(evt);
 }
 
 function updateScreenTaps() {
@@ -191,6 +209,47 @@ function drawScreenTaps() {
     }
 }
 
+function drawHand() {
+    // Loop through all hands that the frame sees
+    for (var i = 0; i < frame.hands.length; i++) {
+        var hand = frame.hands[i];
+
+        // Get hands position, so that it can be passed through for drawing the connections
+        var handPos = leapToScene(hand.palmPosition);
+
+        // Loop through all the fingers
+        for (var j = 0; j < hand.fingers.length; j++) {
+            var finger = hand.fingers[j];
+
+            // Get the fingers position in Canvas
+            var fingerPos = leapToScene(finger.tipPosition);
+
+            // ##First## Draw the Connection
+            c.strokeStyle = "#FFA040";
+            c.lineWidth = 3;
+            c.beginPath();
+            c.moveTo(handPos[0], handPos[1]);
+            c.lineTo(fingerPos[0], fingerPos[1]);
+            c.closePath();
+            c.stroke();
+
+            // ##Second## Draw the Finger
+            c.strokeStyle = "#39AECF";
+            c.lineWidth = 5;
+            c.beginPath();
+            c.arc(fingerPos[0], fingerPos[1], 20, 0, Math.PI * 2);
+            c.closePath();
+            c.stroke();
+        }
+        // ##Third## draw the hand
+        c.fillStyle = "#FF5A40";
+        c.beginPath();
+        c.arc(handPos[0], handPos[1], 40, 0, Math.PI * 2);
+        c.closePath();
+        c.fill();
+    }
+}
+
 // Creates our Leap Controller
 var controller = new Leap.Controller({
     enableGestures: true
@@ -204,17 +263,12 @@ controller.on('frame', function(data) {
     // Clearing the drawing from the previous frame
     c.clearRect(0, 0, width, height);
 
+    drawHand();
     for (var i = 0; i < frame.gestures.length; i++) {
         var gesture = frame.gestures[i];
         var type = gesture.type;
 
         switch (type) {
-            // case "circle":
-            //     onCircle(gesture);
-            //     break;
-            // case "swipe":
-            //     onSwipe(gesture);
-            //     break;
             case "screenTap":
                 onScreenTap(gesture);
                 break;

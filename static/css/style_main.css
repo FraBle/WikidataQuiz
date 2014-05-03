@@ -201,4 +201,5 @@ table tr {
     height: 100%;
     position: fixed;
     z-index: 2;
+    pointer-events: none;
 }
