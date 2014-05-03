@@ -142,7 +142,7 @@ table tr {
 .answer {
 	width: 100%;
 	height: 100%;
-
+	line-height: 2em;
 	font-family: 'Lane';
 	font-weight: 500;
 	font-style: normal;

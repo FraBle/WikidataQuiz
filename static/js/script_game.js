@@ -33,6 +33,7 @@ function addQuestion(phraze, answers, rightAnswer) {
 }
 
 function showNextQuestion() {
+	console.log("Showing next question");
 	currentQuestionIndex += 1;
 	if (currentQuestionIndex > questions.length - 1) {
 		alert("All questions answered");
@@ -49,11 +50,26 @@ function showQuestion(question) {
 	div_question_answer_4.innerHTML = question.answers[3];
 }
 
+function isRightAnswer(value) {
+	if (questions[currentQuestionIndex].rightAnswer != value - 1) {
+		return false;
+	} else {
+		return true;
+	}
+}
+
 function processInput(value) {
 	if (value > 0 && value < 5) {
 		console.log("Processing input: " + value);
-		
+		if (isRightAnswer(value)) {
+			console.log("Right answer");
+			showNextQuestion();
+		} else {
+			console.log("Wrong answer");
+			
+		}
 	} else {
 		console.log("Invalid input: " + value);
 	}
 }
+

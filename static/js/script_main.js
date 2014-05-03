@@ -26,14 +26,14 @@ function resetPlayerPercentage() {
 
 function setPlayer1Percentage(value) {
 	var score = document.getElementById("score1");
-	var valueTotal = document.getElementById("scoreContainer").offsetWidth / 2;
+	var valueTotal = (document.getElementById("scoreContainer").offsetWidth / 2);
 	var valueAbsolute = Math.max(15, (valueTotal * value) / 100);
 	score.style.left = (valueTotal - valueAbsolute) + "px";
 }
 
 function setPlayer2Percentage(value) {
 	var score = document.getElementById("score2");
-	var valueTotal = document.getElementById("scoreContainer").offsetWidth / 2;
+	var valueTotal = (document.getElementById("scoreContainer").offsetWidth / 2);
 	var valueAbsolute = Math.max(15, (valueTotal * value) / 100);
 	score.style.right = (valueTotal - valueAbsolute) + "px";
 }
