@@ -16,6 +16,7 @@ function load() {
 
     resizeContent();
 
+    initPlayers();
     initQuestions();
 }
 

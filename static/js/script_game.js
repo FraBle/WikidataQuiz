@@ -1,6 +1,27 @@
 var questions;
 var currentQuestionIndex = -1;
 
+var players;
+var currentPlayerIndex = 0;
+
+function initPlayers() {
+    console.log("Initializing players..");
+    players = new Array();
+
+    player1 = new Object();
+    player1.name = "Player 1";
+    player1.correct = 0;
+    player1.wrong = 0;
+
+    player2 = new Object();
+    player2.name = "Player 2";
+    player2.correct = 0;
+    player2.wrong = 0;
+    
+    players.push(player1);
+    players.push(player2);
+}
+
 function initQuestions() {
     console.log("Initializing questions..");
     resetPlayerPercentage();
@@ -81,13 +102,24 @@ function processInput(value) {
         console.log("Processing input: " + value);
         if (isRightAnswer(value)) {
             console.log("Right answer");
+            players[currentPlayerIndex].correct += 1;
             visualizeRightAnswer();
             window.setTimeout("showNextQuestion()", 2000);
         } else {
             console.log("Wrong answer");
+            players[currentPlayerIndex].wrong += 1;
             visualizeWrongAnswer(value);
         }
+        updateScore();
     } else {
         console.log("Invalid input: " + value);
     }
+}
+
+function updateScore() {
+    var player1Percentage = (players[0].correct * 100) / questions.length;
+    setPlayer1Percentage(player1Percentage);
+
+    var player2Percentage = (players[1].correct * 100) / questions.length;
+    setPlayer2Percentage(player2Percentage);
 }
