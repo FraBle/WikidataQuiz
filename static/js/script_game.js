@@ -34,6 +34,8 @@ function addQuestion(phraze, answers, rightAnswer) {
 
 function showNextQuestion() {
 	console.log("Showing next question");
+	resetVisualizations();
+
 	currentQuestionIndex += 1;
 	if (currentQuestionIndex > questions.length - 1) {
 		alert("All questions answered");
@@ -58,15 +60,34 @@ function isRightAnswer(value) {
 	}
 }
 
+function resetVisualizations() {
+	var defaultAnswerColor = "#dd630d";
+	document.getElementById("answer1Container").children[0].style.backgroundColor = defaultAnswerColor;
+	document.getElementById("answer2Container").children[0].style.backgroundColor = defaultAnswerColor;
+	document.getElementById("answer3Container").children[0].style.backgroundColor = defaultAnswerColor;
+	document.getElementById("answer4Container").children[0].style.backgroundColor = defaultAnswerColor;
+}
+
+function visualizeRightAnswer() {
+	var div = document.getElementById("answer" + (questions[currentQuestionIndex].rightAnswer + 1) + "Container").children[0];
+	div.style.backgroundColor = "#390";
+}
+
+function visualizeWrongAnswer(value) {
+	var div = document.getElementById("answer" + value + "Container").children[0];
+	div.style.backgroundColor = "#af0039";
+}
+
 function processInput(value) {
 	if (value > 0 && value < 5) {
 		console.log("Processing input: " + value);
 		if (isRightAnswer(value)) {
 			console.log("Right answer");
-			showNextQuestion();
+			visualizeRightAnswer();
+			window.setTimeout("showNextQuestion()", 2000);
 		} else {
 			console.log("Wrong answer");
-			
+			visualizeWrongAnswer(value);
 		}
 	} else {
 		console.log("Invalid input: " + value);
