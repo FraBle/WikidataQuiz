@@ -136,7 +136,8 @@ table tr {
 	-webkit-border-radius: 20px;
 	border-radius: 20px;
 	overflow: hidden;
-
+	cursor: pointer;
+	
 	-webkit-transition: all 0.5s ease;
 	-moz-transition: all 0.5s ease;
 	-o-transition: all 0.5s ease;
@@ -153,6 +154,7 @@ table tr {
 	font-style: normal;
 	font-size: 50px;
 	text-align: center;
+	cursor: pointer;
 }
 
 #answer1Container {
