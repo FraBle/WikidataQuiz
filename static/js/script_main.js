@@ -8,7 +8,7 @@ var div_question_answer_4;
 
 function load() {
     content = document.getElementById("content");
-    div_question_phraze = document.getElementById("question");
+    div_question_phrase = document.getElementById("question");
     div_question_answer_1 = document.getElementById("answer1Container").children[0].children[0];
     div_question_answer_2 = document.getElementById("answer2Container").children[0].children[0];
     div_question_answer_3 = document.getElementById("answer3Container").children[0].children[0];
