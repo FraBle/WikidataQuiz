@@ -1,227 +1,204 @@
-@charset "utf-8";
+@charset"utf-8";
+
 /*
 Yellow: #f6a800
 Orange: #dd630d
 Red: #af0039
 */
-@font-face {
-	font-family: 'Roboto';
-	font-weight: 500;
-	font-style: normal;
-	src: url(../fonts/roboto.ttf);
-	src: local('Roboto Medium'), local('Roboto-Medium'), url(../fonts/roboto.ttf) format('truetype');
+ @font-face {
+    font-family:'Roboto';
+    font-weight: 500;
+    font-style: normal;
+    src: url(../fonts/roboto.ttf);
+    src: local('Roboto Medium'), local('Roboto-Medium'), url(../fonts/roboto.ttf) format('truetype');
 }
-
 @font-face {
-	font-family: 'Lane';
-	src: url(../fonts/lane.ttf);
-	src: local('Lane'), url(../fonts/lane.ttf) format('truetype');
-	font-weight: normal;
-	font-style: normal;
+    font-family:'Lane';
+    src: url(../fonts/lane.ttf);
+    src: local('Lane'), url(../fonts/lane.ttf) format('truetype');
+    font-weight: normal;
+    font-style: normal;
 }
-
 * {
-	font-family: 'Roboto', Arial, sans-serif;
-	cursor: default;
+    font-family:'Roboto', Arial, sans-serif;
+    cursor: default;
 }
-
 a {
-	text-decoration: none;
-	cursor: pointer;
-	color: #eeeeee;
-	-webkit-transition: all 0.5s ease;
-	-moz-transition: all 0.5s ease;
-	-o-transition: all 0.5s ease;
-	-ms-transition: all 0.5s ease;
-	transition: all 0.5s ease;
+    text-decoration: none;
+    cursor: pointer;
+    color: #eeeeee;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    transition: all 0.5s ease;
 }
-
 a:hover {
-	color: #ffffff;
+    color: #ffffff;
 }
-
 h1 {
-	font-family: 'Lane';
-	font-weight: 500;
-	font-style: normal;
-	font-size: 50px;
-	margin-bottom: 10px;
+    font-family:'Lane';
+    font-weight: 500;
+    font-style: normal;
+    font-size: 50px;
+    margin-bottom: 10px;
 }
-
 h2 {
-	font-family: 'Roboto', Arial, sans-serif;
-	font-weight: 400;
-	font-style: normal;
-	font-size: 22px;
-	margin-bottom: 2px;
+    font-family:'Roboto', Arial, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 22px;
+    margin-bottom: 2px;
 }
-
 p {
-	margin-bottom: 10px;
-	margin-top: 0px;
-	font-size: 18px;
+    margin-bottom: 10px;
+    margin-top: 0px;
+    font-size: 18px;
 }
-
 img {
-	border: none;
+    border: none;
 }
-
 body {
-	overflow-y: hidden;
-	overflow-x: hidden !important;
-	margin: 0px;
-	background-color: #FFF;
+    overflow-y: hidden;
+    overflow-x: hidden !important;
+    margin: 0px;
+    background-color: #FFF;
 }
-
 table tr {
-	vertical-align: top;
+    vertical-align: top;
 }
-
 #content {
-	position: relative;
-	top: 0px;
-	left: 0px;
-	right: 0px;
-	bottom: 0px;
+    position: relative;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
 }
-
 #questionContainer {
-	position: absolute;
-	top: 50px;
-	left: 20px;
-	right: 20px;
-	height: 200px;
-	padding: 20px;
-	background-color: #f6a800;
-	-webkit-border-radius: 20px;
-	border-radius: 20px;
-	overflow: hidden;
+    position: absolute;
+    top: 50px;
+    left: 20px;
+    right: 20px;
+    height: 200px;
+    padding: 20px;
+    background-color: #f6a800;
+    -webkit-border-radius: 20px;
+    border-radius: 20px;
+    overflow: hidden;
 }
-
 #question {
-	text-align: center;
-	font-family: 'Lane';
-	font-weight: 500;
-	font-style: normal;
-	font-size: 70px;
+    text-align: center;
+    font-family:'Lane';
+    font-weight: 500;
+    font-style: normal;
+    font-size: 70px;
 }
-
 #answersContainer {
-	position: absolute;
-	top: 310px;
-	left: 20px;
-	right: 20px;
-	bottom: 20px;
-	background-color: #f6a800;
-	-webkit-border-radius: 20px;
-	border-radius: 20px;
-	overflow: hidden;
+    position: absolute;
+    top: 310px;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+    background-color: #f6a800;
+    -webkit-border-radius: 20px;
+    border-radius: 20px;
+    overflow: hidden;
 }
-
 .answerContainer {
-	width: 50%;
-	height: 50%;
+    width: 50%;
+    height: 50%;
 }
-
 .answerSubContainer {
-	position: absolute;
-	padding: 20px;
-
-	top: 20px;
-	left: 20px;
-	right: 20px;
-	bottom: 20px;
-
-	background-color: #dd630d;
-	-webkit-border-radius: 20px;
-	border-radius: 20px;
-	overflow: hidden;
-	cursor: pointer;
-	
-	-webkit-transition: all 0.5s ease;
-	-moz-transition: all 0.5s ease;
-	-o-transition: all 0.5s ease;
-	-ms-transition: all 0.5s ease;
-	transition: all 0.5s ease;
+    position: absolute;
+    padding: 20px;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+    background-color: #dd630d;
+    -webkit-border-radius: 20px;
+    border-radius: 20px;
+    overflow: hidden;
+    cursor: pointer;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    transition: all 0.5s ease;
 }
-
-
 .answer {
-	width: 100%;
-	height: 100%;
-	font-family: 'Lane';
-	font-weight: 500;
-	font-style: normal;
-	font-size: 50px;
-	text-align: center;
-	cursor: pointer;
+    width: 100%;
+    height: 100%;
+    font-family:'Lane';
+    font-weight: 500;
+    font-style: normal;
+    font-size: 50px;
+    text-align: center;
+    cursor: pointer;
 }
-
 #answer1Container {
-	position: absolute;
-	top: 0px;
-	left: 0px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
 }
-
 #answer2Container {
-	position: absolute;
-	top: 0px;
-	left: 50%;
+    position: absolute;
+    top: 0px;
+    left: 50%;
 }
-
 #answer3Container {
-	position: absolute;
-	top: 50%;
-	left: 0px;
+    position: absolute;
+    top: 50%;
+    left: 0px;
 }
-
 #answer4Container {
-	position: absolute;
-	top: 50%;
-	left: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
 }
-
 #scoreContainer {
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	right: 0px;
-	height: 30px;
-	background-color: #f6a800;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    height: 30px;
+    background-color: #f6a800;
 }
-
 .score {
-	position: absolute;
-	height: 100%;
-	background-color: #dd630d;
-	-webkit-transition: all 1.5s ease;
-	-moz-transition: all 1.5s ease;
-	-o-transition: all 1.5s ease;
-	-ms-transition: all 1.5s ease;
-	transition: all 1.5s ease;
+    position: absolute;
+    height: 100%;
+    background-color: #dd630d;
+    -webkit-transition: all 1.5s ease;
+    -moz-transition: all 1.5s ease;
+    -o-transition: all 1.5s ease;
+    -ms-transition: all 1.5s ease;
+    transition: all 1.5s ease;
 }
-
 #score1 {
-	left: 0px;
-	right: 50%;
-	-webkit-border-radius: 15px 0 0 15px;
-	border-radius: 15px 0 0 15px;
+    left: 0px;
+    right: 50%;
+    -webkit-border-radius: 15px 0 0 15px;
+    border-radius: 15px 0 0 15px;
 }
-
 #score2 {
-	left: 50%;
-	right: 0px;-webkit-border-radius: 0 15px 15px 0;
-	border-radius: 0 15px 15px 0;
+    left: 50%;
+    right: 0px;
+    -webkit-border-radius: 0 15px 15px 0;
+    border-radius: 0 15px 15px 0;
 }
-
 .rounded {
-	-webkit-border-radius: 20px;
-	border-radius: 20px;
+    -webkit-border-radius: 20px;
+    border-radius: 20px;
 }
-
 .disable_select {
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+#leapCanvas {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: 2;
 }
