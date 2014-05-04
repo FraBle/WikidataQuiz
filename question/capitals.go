@@ -32,22 +32,10 @@ func CapitalQuestion() *model.Question {
 
 	getCountryCapitalIDs()
 
-	var indexes []int
-	for len(indexes) != 4  {
-		rand.Seed(time.Now().UnixNano())
-		newIndex := rand.Intn(len(countryIDs))
-		if intInArray(newIndex, indexes) == false {
-			indexes = append(indexes, newIndex)			//optimize ? - write directly in result
-		}
-	}
+	indexes := *fourRandomNumbersIn(len(countryIDs))
 
 	rand.Seed(time.Now().UnixNano())
 	result.RightAnswer = rand.Intn(4)
-
-
-	for j := 0; j < len(countryIDs); j++ {
-		fmt.Printf("Land: %d - Hauptstadt: %d\n", countryIDs[j], capitalIDs[j])
-	} 
 
 	result.Phrase = "What is the capitol of " + titleFromID(countryIDs[indexes[result.RightAnswer]]) + "?"
 	result.Answers = []string{titleFromID(capitalIDs[indexes[0]]),
@@ -78,25 +66,3 @@ func getCountryCapitalIDs()  {
 		capitalIDs = append(capitalIDs, int(actualItems[i].([]interface{})[2].(float64)))
 	}
 }
-
-
-
-/*func countryCapitalIDMap()  map[int]int {
-	resp, err := http.Get("http://wdq.wmflabs.org/api?q=claim[31:(tree[6256][][279])]&props=36")
-	if err != nil {
-		// handle error
-	}
-	defer resp.Body.Close()
-
-	body, err := ioutil.ReadAll(resp.Body)	
-	var items map[string]interface{}
-	if err := json.Unmarshal(body, &items); err != nil {
-		fmt.Println("error:", err)
-	}
-
-	var actualItems [][]interface{}
-
-	fmt.Printf("%f", (((items["props"]).(map[string]interface{})["36"]).([]interface{})[0]).([]interface{})[0].(float64))
-
-}
-*/
