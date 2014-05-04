@@ -27,6 +27,7 @@ func main() {
 	// router.NotFoundHandler = http.HandlerFunc(handler.NotFound)
 	router.HandleFunc("/", handler.HomeHandler).Methods("GET")
 	router.HandleFunc("/question", handler.QuestionHandler).Methods("GET")
+	router.HandleFunc("/led/{color}", handler.ColorHandler).Methods("GET")
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("../src/github.com/FraBle/WikidataQuiz/static"))))
 	http.Handle("/", router)
 	log.Fatal(http.ListenAndServe(":8080", nil))

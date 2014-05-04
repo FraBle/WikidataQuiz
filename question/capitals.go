@@ -37,7 +37,7 @@ func CapitalQuestion() *model.Question {
 	rand.Seed(time.Now().UnixNano())
 	result.RightAnswer = rand.Intn(4)
 
-	result.Phrase = "What is the capitol of " + titleFromID(countryIDs[indexes[result.RightAnswer]]) + "?"
+	result.Phrase = "What is the capital of " + titleFromID(countryIDs[indexes[result.RightAnswer]]) + "?"
 	result.Answers = []string{titleFromID(capitalIDs[indexes[0]]),
 							  titleFromID(capitalIDs[indexes[1]]),
 							  titleFromID(capitalIDs[indexes[2]]),
