@@ -257,6 +257,7 @@ function drawHand() {
 function setCurrentSelectedNumber(){
     if (gameState === 1 && frame.hands.length > 0){
         currentSelectedNumber = frame.hands[0].fingers.length;
+        setSelectedNumber(currentSelectedNumber);
     } else {
         currentSelectedNumber = -1;
     }

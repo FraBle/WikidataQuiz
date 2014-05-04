@@ -39,6 +39,22 @@ function setPlayer2Percentage(value) {
     score.style.right = (valueTotal - valueAbsolute) + "px";
 }
 
+function setSelectedNumber(value) {
+    resetSelectedNumber();
+    if (value > 0 && value < 5) {
+        var div = document.getElementById("answer" + value + "Container").children[0].children[0];
+        div.style.backgroundColor = "#FFF";
+    }
+}
+
+function resetSelectedNumber() {
+    var defaultNumberColor = "#8ad5f0";
+    document.getElementById("answer1Container").children[0].children[0].style.backgroundColor = defaultNumberColor;
+    document.getElementById("answer2Container").children[0].children[0].style.backgroundColor = defaultNumberColor;
+    document.getElementById("answer3Container").children[0].children[0].style.backgroundColor = defaultNumberColor;
+    document.getElementById("answer4Container").children[0].children[0].style.backgroundColor = defaultNumberColor;   
+}
+
 function getRequest(url, callback) {
     var xmlhttp = null;
     if (window.XMLHttpRequest) {
