@@ -7,7 +7,7 @@ var div_question_answer_3;
 var div_question_answer_4;
 
 var countdownStart = 0;
-var countdownInterval;
+var countdownInterval = null;
 
 function load() {
     content = document.getElementById("content");
@@ -54,6 +54,7 @@ function stopCountDown() {
     document.getElementById("timerContainer").style.opacity = 0;
     setCountdownPercentage(0);
     gameState = 0;
+    countdownInterval = null;
     processInput(currentSelectedNumber);
 }
 

@@ -89,8 +89,7 @@ function onKeyTap(gesture) {
     if (gameState === 0){
         calculatePlayer(pos);
         gameState = 1;
-        startCountdown();
-        //window.setTimeout("processInput(currentSelectedNumber);gameState=0", countdown);
+        // startCountdown();
     }
 }
 
@@ -257,7 +256,10 @@ function drawHand() {
 }
 
 function setCurrentSelectedNumber(){
-    if (gameState === 1 && frame.hands.length > 0){
+    if (gameState == 1 && frame.hands.length == 1){
+        if (countdownInterval == null){
+            startCountdown();
+        }
         currentSelectedNumber = frame.hands[0].fingers.length;
     } else {
         currentSelectedNumber = -1;
