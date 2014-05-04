@@ -47,6 +47,7 @@ function startCountdown() {
     document.getElementById("timerContainer").style.opacity = 1;
     countdownInterval = setInterval(function(){updateCountdown()}, 50);
     window.setTimeout("stopCountDown()", countdown);
+    setLedColor("blue");
 }
 
 function stopCountDown() {
@@ -85,6 +86,13 @@ function resetSelectedNumber() {
     document.getElementById("answer2Container").children[0].children[0].style.backgroundColor = defaultNumberColor;
     document.getElementById("answer3Container").children[0].children[0].style.backgroundColor = defaultNumberColor;
     document.getElementById("answer4Container").children[0].children[0].style.backgroundColor = defaultNumberColor;
+}
+
+function setLedColor(color) {
+    // blue, red, green, black as String
+    getRequest("/led/" + color, function(response) {
+        console.log("LED color set to " + color);
+    })
 }
 
 function getRequest(url, callback) {

@@ -77,7 +77,16 @@ function showNextQuestion() {
         getNextQuestion();
     }
     if (currentQuestionIndex > questions.length - 1) {
-        alert("All questions answered");
+        var message = questionCount + " of " + questionCount + " questions answered, ";
+        if (players[0].correct > players[1].correct) {
+            message += "Player 1 ";
+        } else if (players[0].correct < players[1].correct) {
+            message += "Player 2 ";
+        } else {
+            "No one ";
+        }
+        message += "won the game!";
+        alert(message);
     } else {
         // Show next question
         showQuestion(questions[currentQuestionIndex]);
@@ -106,16 +115,19 @@ function resetVisualizations() {
     document.getElementById("answer2Container").children[0].style.backgroundColor = defaultAnswerColor;
     document.getElementById("answer3Container").children[0].style.backgroundColor = defaultAnswerColor;
     document.getElementById("answer4Container").children[0].style.backgroundColor = defaultAnswerColor;
+    setLedColor("black");
 }
 
 function visualizeRightAnswer() {
     var div = document.getElementById("answer" + (questions[currentQuestionIndex].rightAnswer + 1) + "Container").children[0];
     div.style.backgroundColor = "#a8d324";
+    setLedColor("green");
 }
 
 function visualizeWrongAnswer(value) {
     var div = document.getElementById("answer" + value + "Container").children[0];
     div.style.backgroundColor = "#ff5f5f";
+    setLedColor("red");
 }
 
 function processInput(value) {
