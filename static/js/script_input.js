@@ -67,10 +67,19 @@ function leapToScene(leapPos) {
     return [x, -y];
 }
 
+function calculatePlayer(pos) {
+    if (pos[0] <= width/2) {
+        setActivePlayer(0);
+    } else {
+        setActivePlayer(1);
+    }
+}
+
 function onKeyTap(gesture) {
     var pos = leapToScene(gesture.position);
     var time = frame.timestamp;
     keyTaps.push([pos[0], pos[1], time]);
+    calculatePlayer(pos);
 }
 
 function updateKeyTaps() {
@@ -122,23 +131,8 @@ function drawKeyTaps() {
 
 function onScreenTap(gesture) {
     var pos = leapToScene(gesture.position);
-    triggerScreenClick(pos);
     var time = frame.timestamp;
     screenTaps.push([pos[0], pos[1], time]);
-}
-
-function triggerScreenClick(pos) {
-    console.log("triggerScreenClick");
-    console.log(pos);
-    var evt = new MouseEvent("click", {
-        canBubble: true,
-        cancelable: true,
-        view: window,
-        clientX: pos[0],
-        clientY: pos[1],
-    });
-    console.log(evt);
-    window.dispatchEvent(evt);
 }
 
 function updateScreenTaps() {
