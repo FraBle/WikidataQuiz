@@ -1,3 +1,4 @@
+var questionCount = 10;
 var questions;
 var currentQuestionIndex = -1;
 
@@ -26,7 +27,9 @@ function initQuestions() {
     console.log("Initializing questions..");
     resetPlayerPercentage();
     questions = new Array();
+    
     addSampleQuestions();
+    getNextQuestion();
 }
 
 function addSampleQuestions() {
@@ -49,6 +52,15 @@ function addQuestion(phrase, answers, rightAnswer) {
     question.answers = answers;
     question.rightAnswer = rightAnswer;
     questions.push(question);
+}
+
+function getNextQuestion() {
+    console.log("Requesting next question..");
+    getRequest("/question", function(response) {
+        console.log(response);
+        var question = JSON.parse(response);
+        questions.push(question);
+    })
 }
 
 function showNextQuestion() {

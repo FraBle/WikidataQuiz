@@ -9,10 +9,10 @@ var div_question_answer_4;
 function load() {
     content = document.getElementById("content");
     div_question_phrase = document.getElementById("question");
-    div_question_answer_1 = document.getElementById("answer1Container").children[0].children[0];
-    div_question_answer_2 = document.getElementById("answer2Container").children[0].children[0];
-    div_question_answer_3 = document.getElementById("answer3Container").children[0].children[0];
-    div_question_answer_4 = document.getElementById("answer4Container").children[0].children[0];
+    div_question_answer_1 = document.getElementById("answer1Container").children[0].children[1];
+    div_question_answer_2 = document.getElementById("answer2Container").children[0].children[1];
+    div_question_answer_3 = document.getElementById("answer3Container").children[0].children[1];
+    div_question_answer_4 = document.getElementById("answer4Container").children[0].children[1];
 
     resizeContent();
 
@@ -37,6 +37,27 @@ function setPlayer2Percentage(value) {
     var valueTotal = (document.getElementById("scoreContainer").offsetWidth / 2);
     var valueAbsolute = Math.max(15, (valueTotal * value) / 100);
     score.style.right = (valueTotal - valueAbsolute) + "px";
+}
+
+function getRequest(url, callback) {
+    var xmlhttp = null;
+    if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    } else if (window.ActiveXObject) {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    xmlhttp.open("GET", url, true);
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState != 4) {
+            // pending
+        }
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            // sent
+            callback(xmlhttp.responseText);
+        }
+    }
+    xmlhttp.send(null);
 }
 
 function resizeContent() {
