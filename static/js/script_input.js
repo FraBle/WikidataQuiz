@@ -3,6 +3,7 @@
 // 1 = answer selection
 var gameState = 0;
 var currentSelectedNumber = -1;
+var countdown = 5000;
 
 // Get the canvas DOM element
 var canvas = document.getElementById('leapCanvas');
@@ -88,7 +89,7 @@ function onKeyTap(gesture) {
     if (gameState === 0){
         calculatePlayer(pos);
         gameState = 1;
-        window.setTimeout("processInput(currentSelectedNumber);gameState=0", 5000);
+        window.setTimeout("processInput(currentSelectedNumber);gameState=0", countdown);
     }
 }
 
