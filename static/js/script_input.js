@@ -1,3 +1,9 @@
+// Save Gamestate
+// 0 = buzzer
+// 1 = answer selection
+var gameState = 0;
+var currentSelectedNumber = -1;
+
 // Get the canvas DOM element
 var canvas = document.getElementById('leapCanvas');
 
@@ -79,7 +85,11 @@ function onKeyTap(gesture) {
     var pos = leapToScene(gesture.position);
     var time = frame.timestamp;
     keyTaps.push([pos[0], pos[1], time]);
-    calculatePlayer(pos);
+    if (gameState === 0){
+        calculatePlayer(pos);
+        gameState = 1;
+        window.setTimeout("processInput(currentSelectedNumber);gameState=0", 5000);
+    }
 }
 
 function updateKeyTaps() {
@@ -244,6 +254,14 @@ function drawHand() {
     }
 }
 
+function setCurrentSelectedNumber(){
+    if (gameState === 1 && frame.hands.length > 0){
+        currentSelectedNumber = frame.hands[0].fingers.length;
+    } else {
+        currentSelectedNumber = -1;
+    }
+}
+
 // Creates our Leap Controller
 var controller = new Leap.Controller({
     enableGestures: true
@@ -258,6 +276,7 @@ controller.on('frame', function(data) {
     c.clearRect(0, 0, width, height);
 
     drawHand();
+    setCurrentSelectedNumber();
     for (var i = 0; i < frame.gestures.length; i++) {
         var gesture = frame.gestures[i];
         var type = gesture.type;
