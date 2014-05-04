@@ -89,7 +89,8 @@ function onKeyTap(gesture) {
     if (gameState === 0){
         calculatePlayer(pos);
         gameState = 1;
-        window.setTimeout("processInput(currentSelectedNumber);gameState=0", countdown);
+        startCountdown();
+        //window.setTimeout("processInput(currentSelectedNumber);gameState=0", countdown);
     }
 }
 

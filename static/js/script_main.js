@@ -6,6 +6,9 @@ var div_question_answer_2;
 var div_question_answer_3;
 var div_question_answer_4;
 
+var countdownStart = 0;
+var countdownInterval;
+
 function load() {
     content = document.getElementById("content");
     div_question_phrase = document.getElementById("question");
@@ -37,6 +40,29 @@ function setPlayer2Percentage(value) {
     var valueTotal = (document.getElementById("scoreContainer").offsetWidth / 2);
     var valueAbsolute = Math.max(15, (valueTotal * value) / 100);
     score.style.right = (valueTotal - valueAbsolute) + "px";
+}
+
+function startCountdown() {
+    countdownStart = new Date();
+    document.getElementById("timerContainer").style.display = "block";
+    countdownInterval = setInterval(function(){updateCountdown()}, 1000);
+    window.setTimeout("stopCountDown()", countdown);
+}
+
+function stopCountDown() {
+    clearInterval(countdownInterval);
+    document.getElementById("timerContainer").style.display = "none";
+    gameState = 0;
+    processInput(currentSelectedNumber);
+}
+
+function updateCountdown() {
+    var now = new Date();
+    var dif = now.getMilliseconds() - countdownStart.getMilliseconds();
+    var width = document.getElementById("scoreContainer").offsetWidth;
+    var percentage = (100 * dif) / countdown;
+    var absolute = (width * percentage) / 100;
+    document.getElementById("timer").style.right = (width - absolute) + "px";
 }
 
 function setSelectedNumber(value) {
