@@ -28,7 +28,7 @@ function initQuestions() {
     resetPlayerPercentage();
     questions = new Array();
     
-    addSampleQuestions();
+    //addSampleQuestions();
     getNextQuestion();
 }
 
@@ -60,6 +60,10 @@ function getNextQuestion() {
         console.log(response);
         var question = JSON.parse(response);
         questions.push(question);
+        if (questions.length == 1) {
+            // This is the first question loaded
+            showNextQuestion();
+        }
     })
 }
 
@@ -68,9 +72,14 @@ function showNextQuestion() {
     resetVisualizations();
 
     currentQuestionIndex += 1;
+    if (questions.length < questionCount) {
+        // Preload next question
+        getNextQuestion();
+    }
     if (currentQuestionIndex > questions.length - 1) {
         alert("All questions answered");
     } else {
+        // Show next question
         showQuestion(questions[currentQuestionIndex]);
     }
 }
@@ -132,10 +141,10 @@ function processInput(value) {
 }
 
 function updateScore() {
-    var player1Percentage = (players[0].correct * 100) / questions.length;
+    var player1Percentage = (players[0].correct * 100) / questionCount;
     setPlayer1Percentage(player1Percentage);
 
-    var player2Percentage = (players[1].correct * 100) / questions.length;
+    var player2Percentage = (players[1].correct * 100) / questionCount;
     setPlayer2Percentage(player2Percentage);
 }
 
