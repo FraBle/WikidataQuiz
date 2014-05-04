@@ -11,7 +11,7 @@ func SetColor(color string) (err error) {
 		log.Printf("Error connecting to Arduino: %v", err)
 		return
 	}
-	_, err := s.Write([]byte(color))
+	_, err = s.Write([]byte(color))
 	if err != nil {
 		log.Printf("Error setting LED to green: %v", err)
 	}
