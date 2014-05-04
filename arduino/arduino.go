@@ -8,12 +8,12 @@ import (
 func SetColor(color string) (err error) {
 	s, err := sers.Open("COM6")
 	if err != nil {
-		log.Fatalf("Error connecting to Arduino: %v", err)
+		log.Printf("Error connecting to Arduino: %v", err)
 		return
 	}
 	n, err := s.Write([]byte(color))
 	if err != nil {
-		log.Fatalf("Error setting LED to green: %v", err)
+		log.Printf("Error setting LED to green: %v", err)
 	}
 	log.Printf("Bytes written: %d", n)
 	s.Close()
