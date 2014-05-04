@@ -7,6 +7,8 @@ import (
 	"io/ioutil"
 	"strconv"
 	"os"
+	"time"
+	"math/rand"
 )
 
 func titleFromID(ID int) string {
@@ -41,5 +43,17 @@ func intInArray(elem int, array []int) bool {
         }
     }
     return false
+}
+
+func fourRandomNumbersIn(area int) *[]int {  // actually [4]int
+	var result []int
+	for len(result) != 4  {
+		rand.Seed(time.Now().UnixNano())
+		newNumber := rand.Intn(area)
+		if intInArray(newNumber, result) == false {
+			result = append(result, newNumber)
+		}
+	}
+	return &result
 }
 
