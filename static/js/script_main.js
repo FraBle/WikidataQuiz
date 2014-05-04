@@ -44,23 +44,28 @@ function setPlayer2Percentage(value) {
 
 function startCountdown() {
     countdownStart = new Date();
-    document.getElementById("timerContainer").style.display = "block";
-    countdownInterval = setInterval(function(){updateCountdown()}, 1000);
+    document.getElementById("timerContainer").style.opacity = 1;
+    countdownInterval = setInterval(function(){updateCountdown()}, 50);
     window.setTimeout("stopCountDown()", countdown);
 }
 
 function stopCountDown() {
     clearInterval(countdownInterval);
-    document.getElementById("timerContainer").style.display = "none";
+    document.getElementById("timerContainer").style.opacity = 0;
+    setCountdownPercentage(0);
     gameState = 0;
     processInput(currentSelectedNumber);
 }
 
 function updateCountdown() {
     var now = new Date();
-    var dif = now.getMilliseconds() - countdownStart.getMilliseconds();
-    var width = document.getElementById("scoreContainer").offsetWidth;
+    var dif = now.getTime() - countdownStart.getTime();
     var percentage = (100 * dif) / countdown;
+    setCountdownPercentage(percentage);
+}
+
+function setCountdownPercentage(percentage) {
+    var width = document.getElementById("scoreContainer").offsetWidth;
     var absolute = (width * percentage) / 100;
     document.getElementById("timer").style.right = (width - absolute) + "px";
 }
@@ -78,7 +83,7 @@ function resetSelectedNumber() {
     document.getElementById("answer1Container").children[0].children[0].style.backgroundColor = defaultNumberColor;
     document.getElementById("answer2Container").children[0].children[0].style.backgroundColor = defaultNumberColor;
     document.getElementById("answer3Container").children[0].children[0].style.backgroundColor = defaultNumberColor;
-    document.getElementById("answer4Container").children[0].children[0].style.backgroundColor = defaultNumberColor;   
+    document.getElementById("answer4Container").children[0].children[0].style.backgroundColor = defaultNumberColor;
 }
 
 function getRequest(url, callback) {
