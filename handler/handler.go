@@ -7,7 +7,9 @@ import (
 	"github.com/gorilla/mux"
 	"io/ioutil"
 	"log"
+	"math/rand"
 	"net/http"
+	"time"
 )
 
 func HomeHandler(rw http.ResponseWriter, req *http.Request) {
@@ -19,11 +21,23 @@ func HomeHandler(rw http.ResponseWriter, req *http.Request) {
 }
 
 func QuestionHandler(rw http.ResponseWriter, req *http.Request) {
-	question, err := json.Marshal(question.CapitalQuestion())
+	rand.Seed(time.Now().UnixNano())
+	newNumber := rand.Intn(3)
+
+	var response []byte
+	var err error
+	switch newNumber {
+	case 0:
+		response, err = json.Marshal(question.CapitalQuestion())
+	case 1:
+		response, err = json.Marshal(question.NobelPrzWinnersDiedAfter2000Question())
+	case 2:
+		response, err = json.Marshal(question.WorldCupQuestion())
+	}
 	if err != nil {
 		log.Printf("%v", err)
 	}
-	rw.Write(question)
+	rw.Write(response)
 }
 
 func ColorHandler(rw http.ResponseWriter, req *http.Request) {
