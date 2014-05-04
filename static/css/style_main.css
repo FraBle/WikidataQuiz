@@ -181,14 +181,14 @@ table tr {
     left: 0px;
     right: 0px;
     height: 30px;
-    background-color: #ffc641;
+    background-color: #50c0e9;
 }
 #timer {
     position: absolute;
     left: 0px;
     right: 0px;
     height: 100%;
-    background-color: #ff8a00;
+    background-color: #09C;
     line-height: 1.7em;
     font-size: 18px;
     text-align: center;

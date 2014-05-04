@@ -118,10 +118,12 @@ function resetVisualizations() {
     setLedColor("black");
 }
 
-function visualizeRightAnswer() {
+function visualizeRightAnswer(useLed) {
     var div = document.getElementById("answer" + (questions[currentQuestionIndex].rightAnswer + 1) + "Container").children[0];
     div.style.backgroundColor = "#a8d324";
-    setLedColor("green");
+    if (useLed) {
+        setLedColor("green");
+    }
 }
 
 function visualizeWrongAnswer(value) {
@@ -136,14 +138,14 @@ function processInput(value) {
         if (isRightAnswer(value)) {
             console.log("Right answer");
             players[currentPlayerIndex].correct += 1;
-            visualizeRightAnswer();
+            visualizeRightAnswer(true);
             window.setTimeout("showNextQuestion()", 2000);
         } else {
             console.log("Wrong answer");
             players[currentPlayerIndex].wrong += 1;
             players[1 - currentPlayerIndex].correct += 1;
             visualizeWrongAnswer(value);
-            window.setTimeout("visualizeRightAnswer()", 1000);
+            window.setTimeout("visualizeRightAnswer(false)", 1000);
             window.setTimeout("showNextQuestion()", 4000);
         }
         updateScore();
