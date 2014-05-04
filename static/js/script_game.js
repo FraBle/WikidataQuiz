@@ -150,4 +150,5 @@ function updateScore() {
 
 function setActivePlayer(value) {
     currentPlayerIndex = value;
+    document.getElementById("timer").innerHTML = "Player " + (value + 1);
 }

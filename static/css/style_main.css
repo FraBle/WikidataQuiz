@@ -189,11 +189,15 @@ table tr {
     right: 0px;
     height: 100%;
     background-color: #ff8a00;
+    line-height: 1.7em;
+    font-size: 18px;
+    text-align: center;
     -webkit-transition: all 0.1s ease;
     -moz-transition: all 0.1s ease;
     -o-transition: all 0.1s ease;
     -ms-transition: all 0.1s ease;
-    transition: all 0.1s ease;
+    transition: all 0.1s ease;-webkit-border-radius: 0 15px 15px 0;
+	border-radius: 0 15px 15px 0;
 }
 #scoreContainer {
     position: absolute;
