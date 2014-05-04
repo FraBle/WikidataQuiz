@@ -35,7 +35,7 @@ function addSampleQuestions() {
     addQuestion("What's the capital city of Germany?", ["Berlin", "Potsdam", "Köln", "Kleinmachnow"],
         0);
 
-    addQuestion("How many times did Germany win the soccer world cup?", ["3", "4", "6", "7"],
+    addQuestion("How many times did Germany win the soccer world cup?", ["2", "3", "6", "7"],
         1);
 
     console.log(questions);
@@ -80,7 +80,7 @@ function isRightAnswer(value) {
 }
 
 function resetVisualizations() {
-    var defaultAnswerColor = "#dd630d";
+    var defaultAnswerColor = "#50c0e9";
     document.getElementById("answer1Container").children[0].style.backgroundColor = defaultAnswerColor;
     document.getElementById("answer2Container").children[0].style.backgroundColor = defaultAnswerColor;
     document.getElementById("answer3Container").children[0].style.backgroundColor = defaultAnswerColor;
@@ -89,12 +89,12 @@ function resetVisualizations() {
 
 function visualizeRightAnswer() {
     var div = document.getElementById("answer" + (questions[currentQuestionIndex].rightAnswer + 1) + "Container").children[0];
-    div.style.backgroundColor = "#390";
+    div.style.backgroundColor = "#a8d324";
 }
 
 function visualizeWrongAnswer(value) {
     var div = document.getElementById("answer" + value + "Container").children[0];
-    div.style.backgroundColor = "#af0039";
+    div.style.backgroundColor = "#ff5f5f";
 }
 
 function processInput(value) {
@@ -108,7 +108,10 @@ function processInput(value) {
         } else {
             console.log("Wrong answer");
             players[currentPlayerIndex].wrong += 1;
+            players[1 - currentPlayerIndex].correct += 1;
             visualizeWrongAnswer(value);
+            window.setTimeout("visualizeRightAnswer()", 1000);
+            window.setTimeout("showNextQuestion()", 4000);
         }
         updateScore();
     } else {
@@ -122,4 +125,8 @@ function updateScore() {
 
     var player2Percentage = (players[1].correct * 100) / questions.length;
     setPlayer2Percentage(player2Percentage);
+}
+
+function setActivePlayer(value) {
+    currentPlayerIndex = value;
 }
