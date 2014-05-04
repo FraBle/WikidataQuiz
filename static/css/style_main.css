@@ -1,9 +1,10 @@
 @charset"utf-8";
 
 /*
-Yellow: #f6a800
-Orange: #dd630d
-Red: #af0039
+Blue: #0099cc
+Orange: #ff8a00
+Red: #cc0000
+Green: #669900
 */
  @font-face {
     font-family:'Roboto';
@@ -81,7 +82,7 @@ table tr {
     right: 20px;
     height: 200px;
     padding: 20px;
-    background-color: #f6a800;
+    background-color: #0099cc;
     -webkit-border-radius: 20px;
     border-radius: 20px;
     overflow: hidden;
@@ -99,7 +100,7 @@ table tr {
     left: 20px;
     right: 20px;
     bottom: 20px;
-    background-color: #f6a800;
+    background-color: #0099cc;
     -webkit-border-radius: 20px;
     border-radius: 20px;
     overflow: hidden;
@@ -115,7 +116,7 @@ table tr {
     left: 20px;
     right: 20px;
     bottom: 20px;
-    background-color: #dd630d;
+    background-color: #50c0e9;
     -webkit-border-radius: 20px;
     border-radius: 20px;
     overflow: hidden;
@@ -162,12 +163,12 @@ table tr {
     left: 0px;
     right: 0px;
     height: 30px;
-    background-color: #f6a800;
+    background-color: #50c0e9;
 }
 .score {
     position: absolute;
     height: 100%;
-    background-color: #dd630d;
+    background-color: #09C;
     -webkit-transition: all 1.5s ease;
     -moz-transition: all 1.5s ease;
     -o-transition: all 1.5s ease;
