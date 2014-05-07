@@ -12,6 +12,7 @@ import (
 	"github.com/FraBle/WikidataQuiz/config"
 )
 
+// SetColor() send the color command to the connected Arduino.
 func SetColor(color string) (err error) {
 	s, err := sers.Open(config.CONFIG.ComPort)
 	if err != nil {

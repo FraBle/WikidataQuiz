@@ -4,8 +4,10 @@ import (
 	// standard Library
 	"io"
 	"log"
+	"math/rand"
 	"net/http"
 	"os"
+	"time"
 
 	// external packages
 	"bitbucket.org/kardianos/osext"
@@ -16,6 +18,7 @@ import (
 	"github.com/FraBle/WikidataQuiz/handler"
 )
 
+// The main function reads the config and starts the web server.
 func main() {
 
 	if err := chdirToBinary(); err != nil {
@@ -38,6 +41,7 @@ func main() {
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
+// chdirToBinary() change the current working directory to the binary file so that relative paths work without any problems.
 func chdirToBinary() error {
 	path, err := osext.ExecutableFolder()
 	if err != nil {
@@ -46,6 +50,7 @@ func chdirToBinary() error {
 	return os.Chdir(path)
 }
 
+// initializeLogger() enables dual logging: into a log file and to standard out.
 func initializeLogger() {
 	if err := os.MkdirAll("../log", os.ModeDir|os.ModePerm); err != nil {
 		log.Fatalf("Error creating log directory: %v", err)
@@ -55,4 +60,8 @@ func initializeLogger() {
 		log.Fatalf("Error opening file: %v", err)
 	}
 	log.SetOutput(io.MultiWriter(logfile, os.Stdout))
+}
+
+func initializeRandomNumberGenerator() {
+	rand.Seed(time.Now().UTC().UnixNano())
 }

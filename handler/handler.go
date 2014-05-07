@@ -9,9 +9,9 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
-	"time"
 )
 
+// The HomeHandler returns the index.html
 func HomeHandler(rw http.ResponseWriter, req *http.Request) {
 	body, err := ioutil.ReadFile("../src/github.com/FraBle/WikidataQuiz/static/html/index.html")
 	if err != nil {
@@ -20,13 +20,11 @@ func HomeHandler(rw http.ResponseWriter, req *http.Request) {
 	rw.Write(body)
 }
 
+// The QuestionHandler returns a randomly chosen question as json.
 func QuestionHandler(rw http.ResponseWriter, req *http.Request) {
-	rand.Seed(time.Now().UnixNano())
-	newNumber := rand.Intn(3)
-
 	var response []byte
 	var err error
-	switch newNumber {
+	switch rand.Intn(3) {
 	case 0:
 		response, err = json.Marshal(question.CapitalQuestion())
 	case 1:
@@ -40,6 +38,7 @@ func QuestionHandler(rw http.ResponseWriter, req *http.Request) {
 	rw.Write(response)
 }
 
+// The ColorHandler sets the LED color of the LED stripe connected to the Arduino.
 func ColorHandler(rw http.ResponseWriter, req *http.Request) {
 	vars := mux.Vars(req)
 	color := vars["color"]
