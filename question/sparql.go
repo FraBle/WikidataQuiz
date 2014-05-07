@@ -1,15 +1,20 @@
-// You can edit this code!
-// Click here and start typing.
 package question
 
 import (
-	"github.com/knakk/fenster/sparql"
-	"time"
-	"io/ioutil"
+	// standard library
+	"log"
 	"strconv"
+	"time"
+
+	// external packages
+	"github.com/knakk/fenster/sparql"
+
+	// internal packages
+	"github.com/FraBle/WikidataQuiz/config"
 )
 
 func getCount(result *sparql.Results) int {
+	log.Print(result)
 	for _, value := range result.Results.Bindings[0] {
 		i, _ := strconv.Atoi(value.Value)
 		return i
@@ -17,15 +22,12 @@ func getCount(result *sparql.Results) int {
 	return -1
 }
 
-func query(q string) *sparql.Results {
-	endpoint := "http://dbpedia.org/sparql"
-	tenSec := time.Duration(10)*time.Second
-	byteRes, _ := sparql.Query(endpoint, q, "json", tenSec, tenSec)
-	res, _ := sparql.ParseJSON(byteRes)
-	return res
-}
-
-func readFile(filename string) string {
-	byteRes, _ := ioutil.ReadFile(filename)
-	return string(byteRes)
+func query(query string) (result *sparql.Results, err error) {
+	timeout := time.Duration(config.CONFIG.DBpediaEndpointTimeout) * time.Second
+	byteResult, err := sparql.Query(config.CONFIG.DBpediaEndpoint, query, "json", timeout, timeout)
+	if err != nil {
+		return
+	}
+	result, err = sparql.ParseJSON(byteResult)
+	return
 }

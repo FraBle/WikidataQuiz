@@ -6,17 +6,20 @@ import (
 	"strconv"
 )
 
-func WorldCupQuestion() *model.Question {
-	result := new(model.Question)
+func WorldCupQuestion() (result *model.Question, err error) {
 	q := `PREFIX dbpedia2: <http://dbpedia.org/property/>
 SELECT COUNT(DISTINCT ?t)
 WHERE {
   ?t dbpedia2:tourneyName ?name .
   FILTER (STR(?name) = "FIFA World Cup")
 }`
-	count := getCount(query(q))
+	offsetResult, err := query(q)
+	if err != nil {
+		return
+	}
+	count := getCount(offsetResult)
 	offset := rand.Intn(count)
-	q =  `PREFIX dbpedia2: <http://dbpedia.org/property/>
+	q = `PREFIX dbpedia2: <http://dbpedia.org/property/>
 SELECT ?year ?first ?second ?third ?fourth
 WHERE {
   ?t dbpedia2:tourneyName ?name .
@@ -29,7 +32,10 @@ WHERE {
 }
 LIMIT 1
 OFFSET ` + strconv.Itoa(offset)
-	results := query(q)
+	results, err := query(q)
+	if err != nil {
+		return
+	}
 	year := results.Results.Bindings[0]["year"].Value
 	first := results.Results.Bindings[0]["first"].Value
 	second := results.Results.Bindings[0]["second"].Value
@@ -37,13 +43,13 @@ OFFSET ` + strconv.Itoa(offset)
 	fourth := results.Results.Bindings[0]["fourth"].Value
 	list := [...]string{second, third, fourth}
 
-	indexes := *fourRandomNumbersIn(4)
+	indexes := fourRandomNumbersIn(4)
 	result.RightAnswer = indexes[0]
-	result.Answers =  make([]string, 4)
+	// result.Answers =  make([]string, 4)
 	result.Answers[indexes[0]] = first
-	for i:=1; i<4; i++ {
+	for i := 1; i < 4; i++ {
 		result.Answers[indexes[i]] = list[i-1]
 	}
 	result.Phrase = "Who won the FIFA world championship in " + year + "?"
-	return result
+	return
 }

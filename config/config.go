@@ -9,7 +9,9 @@ import (
 )
 
 type Config struct {
-	ComPort string `yaml:"comPort,omitempty"`
+	ComPort                string `yaml:"comPort,omitempty"`
+	DBpediaEndpoint        string `yaml:"dbpediaEndpoint,omitempty"`
+	DBpediaEndpointTimeout int    `yaml:"dbpediaEndpointTimeout,omitempty"`
 }
 
 var CONFIG *Config = new(Config)

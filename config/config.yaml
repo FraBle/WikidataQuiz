@@ -1,1 +1,3 @@
 comPort: COM6
+dbpediaEndpoint: http://dbpedia.org/sparql
+dbpediaEndpointTimeout: 10

@@ -22,18 +22,27 @@ func HomeHandler(rw http.ResponseWriter, req *http.Request) {
 
 // The QuestionHandler returns a randomly chosen question as json.
 func QuestionHandler(rw http.ResponseWriter, req *http.Request) {
-	var response []byte
-	var err error
+	var (
+		response []byte
+		err      error
+	)
 	switch rand.Intn(3) {
 	case 0:
 		response, err = json.Marshal(question.CapitalQuestion())
 	case 1:
-		response, err = json.Marshal(question.NobelPrzWinnersDiedAfter2000Question())
+		response, err = json.Marshal(question.NobelPrizeWinnersQuestion())
 	case 2:
-		response, err = json.Marshal(question.WorldCupQuestion())
+		q, err := question.WorldCupQuestion()
+		if err != nil {
+			log.Printf("Error creating world cup question", err)
+			// use capital question as fall-back if dbpedia errored (time-out...)
+			response, err = json.Marshal(question.CapitalQuestion())
+		} else {
+			response, err = json.Marshal(q)
+		}
 	}
 	if err != nil {
-		log.Printf("%v", err)
+		log.Printf("Error creating question: %v", err)
 	}
 	rw.Write(response)
 }

@@ -1,53 +1,46 @@
 package question
 
 import (
-	"github.com/FraBle/WikidataQuiz/model"
-	"fmt"
-	"net/http"
 	"encoding/json"
+	"fmt"
+	"github.com/FraBle/WikidataQuiz/model"
 	"io/ioutil"
-	"strconv"
 	"math/rand"
-	"time"
+	"net/http"
+	"strconv"
 )
 
 type peopleDeathDateResponse struct {
-	Status struct{
-		Error string 
-		Items int
-		Querytime string
+	Status struct {
+		Error        string
+		Items        int
+		Querytime    string
 		Parsed_query string
 	}
 	Items []int
-	Props struct{
+	Props struct {
 		P570 []interface{} `json:"570"`
 	}
 }
 
-// todo: start date and end data saved in variable/ constant
+// TODO: start date and end data saved in variable/ constant
 
-
-var peopleIDs []int
-var deathYears []int
-
-func NobelPrzWinnersDiedAfter2000Question() *model.Question {
+// NobelPrizeWinnersQuestion() generates a question about the death date of a nobel prize winner who died after 2000.
+func NobelPrizeWinnersQuestion() *model.Question {
 	result := new(model.Question)
 
-	getPeopleIDsAndDeathYears()
+	deathYears, peopleIDs := getPeopleIDsAndDeathYears()
 
-	rand.Seed(time.Now().UnixNano())
 	selectedPersonIndex := rand.Intn(len(peopleIDs))
 
-	rand.Seed(time.Now().UnixNano())
 	result.RightAnswer = rand.Intn(4)
-
-	answers := []string{"","","",""}
+	var answers [4]string
 
 	answers[result.RightAnswer] = strconv.Itoa(deathYears[selectedPersonIndex])
 
-	offsets := *fourRandomNumbersIn(15)    // one number not used
+	offsets := fourRandomNumbersIn(15) // one number not used
 
-	for i:=0; i < 3; i++{
+	for i := 0; i < 3; i++ {
 		newAnswer := 2000 + offsets[i]
 		if newAnswer == deathYears[selectedPersonIndex] {
 			newAnswer = 1999
@@ -66,14 +59,14 @@ func NobelPrzWinnersDiedAfter2000Question() *model.Question {
 	return result
 }
 
-func getPeopleIDsAndDeathYears()  {
+func getPeopleIDsAndDeathYears() (deathYears []int, peopleIDs []int) {
 	resp, err := http.Get("http://wdq.wmflabs.org/api?q=CLAIM[166:(TREE[7191][][279])]%20AND%20BETWEEN[570,2000,2015]&props=570")
 	if err != nil {
 		// handle error
 	}
 	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)	
+	body, err := ioutil.ReadAll(resp.Body)
 	var items peopleDeathDateResponse
 	if err := json.Unmarshal(body, &items); err != nil {
 		fmt.Println("error:", err)
@@ -82,8 +75,8 @@ func getPeopleIDsAndDeathYears()  {
 	peopleIDs = items.Items
 
 	actualItems := items.Props.P570
-	
-	for i:=0; i < len(actualItems); i++ {
+
+	for i := 0; i < len(actualItems); i++ {
 		timeString := actualItems[i].([]interface{})[2].(string)
 
 		t, err := strconv.Atoi(timeString[8:12])
@@ -92,4 +85,5 @@ func getPeopleIDsAndDeathYears()  {
 		}
 		deathYears = append(deathYears, t)
 	}
+	return
 }
