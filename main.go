@@ -30,7 +30,6 @@ func main() {
 
 	router := mux.NewRouter().StrictSlash(true)
 
-	// router.NotFoundHandler = http.HandlerFunc(handler.NotFound)
 	router.HandleFunc("/", handler.HomeHandler).Methods("GET")
 	router.HandleFunc("/question", handler.QuestionHandler).Methods("GET")
 	router.HandleFunc("/led/{color}", handler.ColorHandler).Methods("GET")

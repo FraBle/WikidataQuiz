@@ -45,12 +45,20 @@ func ColorHandler(rw http.ResponseWriter, req *http.Request) {
 	color := vars["color"]
 	switch color {
 	case "black":
-		arduino.SetColor("<02>")
+		if err := arduino.SetColor("<02>"); err != nil {
+			http.Error(rw, err.Error(), http.StatusInternalServerError)
+		}
 	case "red":
-		arduino.SetColor("<03>")
+		if err := arduino.SetColor("<03>"); err != nil {
+			http.Error(rw, err.Error(), http.StatusInternalServerError)
+		}
 	case "green":
-		arduino.SetColor("<04>")
+		if err := arduino.SetColor("<04>"); err != nil {
+			http.Error(rw, err.Error(), http.StatusInternalServerError)
+		}
 	case "blue":
-		arduino.SetColor("<05>")
+		if err := arduino.SetColor("<05>"); err != nil {
+			http.Error(rw, err.Error(), http.StatusInternalServerError)
+		}
 	}
 }
