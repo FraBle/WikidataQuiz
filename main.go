@@ -1,13 +1,19 @@
 package main
 
 import (
-	"bitbucket.org/kardianos/osext"
-	"github.com/FraBle/WikidataQuiz/handler"
-	"github.com/gorilla/mux"
+	// standard Library
 	"io"
 	"log"
 	"net/http"
 	"os"
+
+	// external packages
+	"bitbucket.org/kardianos/osext"
+	"github.com/gorilla/mux"
+
+	// internal packages
+	"github.com/FraBle/WikidataQuiz/config"
+	"github.com/FraBle/WikidataQuiz/handler"
 )
 
 func main() {
@@ -18,9 +24,9 @@ func main() {
 
 	initializeLogger()
 
-	// if err := config.ReadConfig(); err != nil {
-	//     log.Printf("Error reading config file: %v", err)
-	// }
+	if err := config.ReadConfig(); err != nil {
+		log.Printf("Error reading config file: %v", err)
+	}
 
 	router := mux.NewRouter().StrictSlash(true)
 
