@@ -9,7 +9,7 @@ import (
 	"github.com/FraBle/WikidataQuiz/utility"
 )
 
-// WorldCupQuestion() generates a question about the winner of the world cup in a chosen year.
+// WorldCupQuestion() generates a question about the winner of the world cup in a random year.
 func WorldCupQuestion() (result model.Question, err error) {
 	q := `PREFIX dbpedia2: <http://dbpedia.org/property/>
 SELECT COUNT(DISTINCT ?t)

@@ -27,8 +27,6 @@ type peopleDeathDateResponse struct {
 	}
 }
 
-// TODO: start date and end data saved in variable/ constant
-
 // NobelPrizeWinnersQuestion() generates a question about the death date of a nobel prize winner who died after 2000.
 func NobelPrizeWinnersQuestion() (result model.Question, err error) {
 	deathYears, peopleIDs := getPeopleIDsAndDeathYears()
@@ -36,17 +34,14 @@ func NobelPrizeWinnersQuestion() (result model.Question, err error) {
 
 	result.RightAnswer = utility.Random(0, 4)
 	var answers [4]string
-
 	answers[result.RightAnswer] = strconv.Itoa(deathYears[selectedPersonIndex])
-
-	offsets := utility.FourRandomNumbersIn(15) // one number not used
+	offsets := utility.FourRandomNumbersIn(15)
 
 	for i := 0; i < 3; i++ {
 		newAnswer := 2000 + offsets[i]
 		if newAnswer == deathYears[selectedPersonIndex] {
 			newAnswer = 1999
 		}
-
 		if i >= result.RightAnswer {
 			answers[i+1] = strconv.Itoa(newAnswer)
 		} else {
@@ -56,7 +51,7 @@ func NobelPrizeWinnersQuestion() (result model.Question, err error) {
 
 	result.Answers = answers
 
-	person, err := titleFromID(peopleIDs[selectedPersonIndex])
+	person, err := utility.TitleFromID(peopleIDs[selectedPersonIndex])
 	if err != nil {
 		log.Printf("Error getting nobel prize winner title: %v", err)
 		return
@@ -66,13 +61,14 @@ func NobelPrizeWinnersQuestion() (result model.Question, err error) {
 	return
 }
 
+// getPeopleIDsAndDeathYears() is a helper function which calls the wmflabs API to aggregate the appropiate people IDs and death dates.
 func getPeopleIDsAndDeathYears() (deathYears []int, peopleIDs []int) {
 	resp, err := http.Get("http://wdq.wmflabs.org/api?q=CLAIM[166:(TREE[7191][][279])]%20AND%20BETWEEN[570,2000,2015]&props=570")
 	if err != nil {
 		// handle error
 	}
-	defer resp.Body.Close()
 
+	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	var items peopleDeathDateResponse
 	if err := json.Unmarshal(body, &items); err != nil {
@@ -80,12 +76,10 @@ func getPeopleIDsAndDeathYears() (deathYears []int, peopleIDs []int) {
 	}
 
 	peopleIDs = items.Items
-
 	actualItems := items.Props.P570
 
 	for i := 0; i < len(actualItems); i++ {
 		timeString := actualItems[i].([]interface{})[2].(string)
-
 		t, err := strconv.Atoi(timeString[8:12])
 		if err != nil {
 			fmt.Printf("%v", err)

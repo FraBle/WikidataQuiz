@@ -16,7 +16,7 @@ import (
 	"github.com/FraBle/WikidataQuiz/utility"
 )
 
-// The HomeHandler returns the index.html
+// The HomeHandler returns the index.html.
 func HomeHandler(rw http.ResponseWriter, req *http.Request) {
 	body, err := ioutil.ReadFile("../src/github.com/FraBle/WikidataQuiz/static/html/index.html")
 	if err != nil {
@@ -25,7 +25,7 @@ func HomeHandler(rw http.ResponseWriter, req *http.Request) {
 	rw.Write(body)
 }
 
-// The QuestionHandler returns a randomly chosen question as json.
+// The QuestionHandler returns a randomly chosen question as JSON.
 func QuestionHandler(rw http.ResponseWriter, req *http.Request) {
 	var (
 		response []byte

@@ -18,7 +18,6 @@ import (
 
 // The main function reads the config and starts the web server.
 func main() {
-
 	if err := chdirToBinary(); err != nil {
 		log.Printf("Error changing directory: %v", err)
 	}
@@ -30,7 +29,6 @@ func main() {
 	}
 
 	router := mux.NewRouter().StrictSlash(true)
-
 	router.HandleFunc("/", handler.HomeHandler).Methods("GET")
 	router.HandleFunc("/question", handler.QuestionHandler).Methods("GET")
 	router.HandleFunc("/led/{color}", handler.ColorHandler).Methods("GET")

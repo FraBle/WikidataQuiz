@@ -25,6 +25,8 @@ type countryCapitalResponse struct {
 	}
 }
 
+// CapitalQuestion() generates a question about the capital of a country.
+// It offers different capitals whereby one is correct.
 func CapitalQuestion() (result model.Question, err error) {
 	countryIDs, capitalIDs, err := getCountryCapitalIDs()
 	if err != nil {
@@ -35,7 +37,7 @@ func CapitalQuestion() (result model.Question, err error) {
 
 	result.RightAnswer = utility.Random(0, 4)
 
-	country, err := titleFromID(countryIDs[indexes[result.RightAnswer]])
+	country, err := utility.TitleFromID(countryIDs[indexes[result.RightAnswer]])
 	if err != nil {
 		log.Printf("Error getting country title: %v", err)
 		return
@@ -44,7 +46,7 @@ func CapitalQuestion() (result model.Question, err error) {
 	result.Phrase = "What is the capital of " + country + "?"
 
 	for i, val := range indexes {
-		capital, e := titleFromID(capitalIDs[val])
+		capital, e := utility.TitleFromID(capitalIDs[val])
 		if e != nil {
 			log.Printf("Error getting capital title: %v", err)
 			return result, e
@@ -55,6 +57,7 @@ func CapitalQuestion() (result model.Question, err error) {
 	return
 }
 
+// getCountryCapitalIDs() is a helper function which calls the wmflabs API to aggregate the appropiate country IDs.
 func getCountryCapitalIDs() (countryIDs, capitalIDs []int, err error) {
 	resp, err := http.Get("http://wdq.wmflabs.org/api?q=claim[31:(tree[6256][][279])]&props=36")
 	if err != nil {

@@ -1,4 +1,4 @@
-package question
+package utility
 
 import (
 	// standard library
@@ -9,7 +9,8 @@ import (
 	"strconv"
 )
 
-func titleFromID(ID int) (title string, err error) {
+// TitleFromID() calls the Wikidata API to get the title to a given ID.
+func TitleFromID(ID int) (title string, err error) {
 	response, err := http.Get("https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q" + strconv.Itoa(ID) + "&format=json&languages=en&props=labels")
 	if err != nil {
 		log.Printf("Error calling Wikidata API: %v", err)
