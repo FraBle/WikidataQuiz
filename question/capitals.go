@@ -1,68 +1,82 @@
 package question
 
 import (
-	"github.com/FraBle/WikidataQuiz/model"
-	"net/http"
+	// standard library
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
-	"math/rand"
-	"time"
+	"log"
+	"net/http"
+
+	// internal packages
+	"github.com/FraBle/WikidataQuiz/model"
+	"github.com/FraBle/WikidataQuiz/utility"
 )
 
 type countryCapitalResponse struct {
-	Status struct{
-		Error string 
-		Items int
-		Querytime string
+	Status struct {
+		Error        string
+		Items        int
+		Querytime    string
 		Parsed_query string
 	}
 	Items []int
-	Props struct{
+	Props struct {
 		P36 []interface{} `json:"36"`
 	}
 }
 
-var countryIDs []int
-var capitalIDs []int
+// CapitalQuestion() generates a question about the capital of a country.
+// It offers different capitals whereby one is correct.
+func CapitalQuestion() (result model.Question, err error) {
+	countryIDs, capitalIDs, err := getCountryCapitalIDs()
+	if err != nil {
+		return
+	}
 
+	indexes := utility.FourRandomNumbersIn(len(countryIDs))
 
-func CapitalQuestion() *model.Question {
-	result := new(model.Question)
+	result.RightAnswer = utility.Random(0, 4)
 
-	getCountryCapitalIDs()
+	country, err := utility.TitleFromID(countryIDs[indexes[result.RightAnswer]])
+	if err != nil {
+		log.Printf("Error getting country title: %v", err)
+		return
+	}
 
-	indexes := *fourRandomNumbersIn(len(countryIDs))
+	result.Phrase = "What is the capital of " + country + "?"
 
-	rand.Seed(time.Now().UnixNano())
-	result.RightAnswer = rand.Intn(4)
+	for i, val := range indexes {
+		capital, e := utility.TitleFromID(capitalIDs[val])
+		if e != nil {
+			log.Printf("Error getting capital title: %v", err)
+			return result, e
+		}
+		result.Answers[i] = capital
+	}
 
-	result.Phrase = "What is the capital of " + titleFromID(countryIDs[indexes[result.RightAnswer]]) + "?"
-	result.Answers = []string{titleFromID(capitalIDs[indexes[0]]),
-							  titleFromID(capitalIDs[indexes[1]]),
-							  titleFromID(capitalIDs[indexes[2]]),
-							  titleFromID(capitalIDs[indexes[3]])}
-	return result
+	return
 }
 
-
-func getCountryCapitalIDs()  {
+// getCountryCapitalIDs() is a helper function which calls the wmflabs API to aggregate the appropiate country IDs.
+func getCountryCapitalIDs() (countryIDs, capitalIDs []int, err error) {
 	resp, err := http.Get("http://wdq.wmflabs.org/api?q=claim[31:(tree[6256][][279])]&props=36")
 	if err != nil {
-		// handle error
+		log.Printf("Error calling wmflabs API: %v", err)
+		return
 	}
 	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)	
+	body, err := ioutil.ReadAll(resp.Body)
 	var items countryCapitalResponse
 	if err := json.Unmarshal(body, &items); err != nil {
-		fmt.Println("error:", err)
+		log.Printf("Error unmarshaling wmflabs response: %v", err)
 	}
 
 	actualItems := items.Props.P36
-	
-	for i:=0; i < len(actualItems); i++ {
+
+	for i := 0; i < len(actualItems); i++ {
 		countryIDs = append(countryIDs, int(actualItems[i].([]interface{})[0].(float64)))
 		capitalIDs = append(capitalIDs, int(actualItems[i].([]interface{})[2].(float64)))
 	}
+	return
 }

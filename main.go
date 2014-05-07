@@ -1,30 +1,34 @@
 package main
 
 import (
-	"bitbucket.org/kardianos/osext"
-	"github.com/FraBle/WikidataQuiz/handler"
-	"github.com/gorilla/mux"
+	// standard Library
 	"io"
 	"log"
 	"net/http"
 	"os"
+
+	// external packages
+	"bitbucket.org/kardianos/osext"
+	"github.com/gorilla/mux"
+
+	// internal packages
+	"github.com/FraBle/WikidataQuiz/config"
+	"github.com/FraBle/WikidataQuiz/handler"
 )
 
+// The main function reads the config and starts the web server.
 func main() {
-
 	if err := chdirToBinary(); err != nil {
 		log.Printf("Error changing directory: %v", err)
 	}
 
 	initializeLogger()
 
-	// if err := config.ReadConfig(); err != nil {
-	//     log.Printf("Error reading config file: %v", err)
-	// }
+	if err := config.ReadConfig(); err != nil {
+		log.Printf("Error reading config file: %v", err)
+	}
 
 	router := mux.NewRouter().StrictSlash(true)
-
-	// router.NotFoundHandler = http.HandlerFunc(handler.NotFound)
 	router.HandleFunc("/", handler.HomeHandler).Methods("GET")
 	router.HandleFunc("/question", handler.QuestionHandler).Methods("GET")
 	router.HandleFunc("/led/{color}", handler.ColorHandler).Methods("GET")
@@ -33,6 +37,7 @@ func main() {
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
+// chdirToBinary() change the current working directory to the binary file so that relative paths work without any problems.
 func chdirToBinary() error {
 	path, err := osext.ExecutableFolder()
 	if err != nil {
@@ -41,6 +46,7 @@ func chdirToBinary() error {
 	return os.Chdir(path)
 }
 
+// initializeLogger() enables dual logging: into a log file and to standard out.
 func initializeLogger() {
 	if err := os.MkdirAll("../log", os.ModeDir|os.ModePerm); err != nil {
 		log.Fatalf("Error creating log directory: %v", err)

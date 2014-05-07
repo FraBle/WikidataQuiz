@@ -1,56 +1,93 @@
 package handler
 
 import (
+	// standard library
 	"encoding/json"
-	"github.com/FraBle/WikidataQuiz/arduino"
-	"github.com/FraBle/WikidataQuiz/question"
-	"github.com/gorilla/mux"
 	"io/ioutil"
 	"log"
-	"math/rand"
 	"net/http"
-	"time"
+
+	// external packages
+	"github.com/gorilla/mux"
+
+	// internal packages
+	"github.com/FraBle/WikidataQuiz/arduino"
+	"github.com/FraBle/WikidataQuiz/question"
+	"github.com/FraBle/WikidataQuiz/utility"
 )
 
+// The HomeHandler returns the index.html.
 func HomeHandler(rw http.ResponseWriter, req *http.Request) {
 	body, err := ioutil.ReadFile("../src/github.com/FraBle/WikidataQuiz/static/html/index.html")
 	if err != nil {
-		log.Printf("%v", err)
+		log.Printf("Error reading index.html: %v", err)
 	}
 	rw.Write(body)
 }
 
+// The QuestionHandler returns a randomly chosen question as JSON.
 func QuestionHandler(rw http.ResponseWriter, req *http.Request) {
-	rand.Seed(time.Now().UnixNano())
-	newNumber := rand.Intn(3)
-
-	var response []byte
-	var err error
-	switch newNumber {
+	var (
+		response []byte
+		err      error
+	)
+	switch utility.Random(0, 3) {
 	case 0:
-		response, err = json.Marshal(question.CapitalQuestion())
+		q, err := question.CapitalQuestion()
+		if err != nil {
+			log.Printf("Error creating capital question", err)
+		} else {
+			response, err = json.Marshal(&q)
+		}
 	case 1:
-		response, err = json.Marshal(question.NobelPrzWinnersDiedAfter2000Question())
+		q, err := question.NobelPrizeWinnersQuestion()
+		if err != nil {
+			log.Printf("Error creating nobel prize winner question", err)
+		} else {
+			response, err = json.Marshal(&q)
+		}
 	case 2:
-		response, err = json.Marshal(question.WorldCupQuestion())
+		q, err := question.WorldCupQuestion()
+		if err != nil {
+			log.Printf("Error creating world cup question", err)
+
+			// use capital question as fall-back if dbpedia errored (time-out...)
+			q, err = question.CapitalQuestion()
+			if err != nil {
+				log.Printf("Error creating capital question", err)
+			} else {
+				response, err = json.Marshal(&q)
+			}
+		} else {
+			response, err = json.Marshal(&q)
+		}
 	}
 	if err != nil {
-		log.Printf("%v", err)
+		log.Printf("Error creating question: %v", err)
 	}
 	rw.Write(response)
 }
 
+// The ColorHandler sets the LED color of the LED stripe connected to the Arduino.
 func ColorHandler(rw http.ResponseWriter, req *http.Request) {
 	vars := mux.Vars(req)
 	color := vars["color"]
 	switch color {
 	case "black":
-		arduino.SetColor("<02>")
+		if err := arduino.SetColor("<02>"); err != nil {
+			http.Error(rw, err.Error(), http.StatusInternalServerError)
+		}
 	case "red":
-		arduino.SetColor("<03>")
+		if err := arduino.SetColor("<03>"); err != nil {
+			http.Error(rw, err.Error(), http.StatusInternalServerError)
+		}
 	case "green":
-		arduino.SetColor("<04>")
+		if err := arduino.SetColor("<04>"); err != nil {
+			http.Error(rw, err.Error(), http.StatusInternalServerError)
+		}
 	case "blue":
-		arduino.SetColor("<05>")
+		if err := arduino.SetColor("<05>"); err != nil {
+			http.Error(rw, err.Error(), http.StatusInternalServerError)
+		}
 	}
 }
