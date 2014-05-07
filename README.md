@@ -13,7 +13,7 @@ A connected [Arduino](http://www.arduino.cc/ "Arduino") with a LED stripe gives 
 The provided questions and answers are generated using the [Wikidata](https://www.wikidata.org/w/api.php "Wikidata") and [DBpedia](http://dbpedia.org/sparql "DBpedia") API.
 There are currently 3 question categories available:
 
-- FIFA World Cup winner
+- FIFA World Cup winners
 - Capitals
 - Day of death of Nobel Prize winners
 
