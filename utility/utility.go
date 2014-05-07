@@ -1,8 +1,9 @@
-package question
+package utility
 
 import (
 	// standard library
 	"math/rand"
+	"time"
 )
 
 func intInArray(elem int, array []int) bool {
@@ -14,12 +15,17 @@ func intInArray(elem int, array []int) bool {
 	return false
 }
 
-func fourRandomNumbersIn(area int) (result []int) {
+func FourRandomNumbersIn(area int) (result []int) {
 	for len(result) != 4 {
-		number := rand.Intn(area)
+		number := Random(0, area)
 		if !intInArray(number, result) {
 			result = append(result, number)
 		}
 	}
 	return
+}
+
+func Random(min, max int) int {
+	rand.Seed(time.Now().Unix())
+	return rand.Intn(max-min) + min
 }

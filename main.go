@@ -4,10 +4,8 @@ import (
 	// standard Library
 	"io"
 	"log"
-	"math/rand"
 	"net/http"
 	"os"
-	"time"
 
 	// external packages
 	"bitbucket.org/kardianos/osext"
@@ -60,8 +58,4 @@ func initializeLogger() {
 		log.Fatalf("Error opening file: %v", err)
 	}
 	log.SetOutput(io.MultiWriter(logfile, os.Stdout))
-}
-
-func initializeRandomNumberGenerator() {
-	rand.Seed(time.Now().UTC().UnixNano())
 }

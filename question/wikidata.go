@@ -3,34 +3,31 @@ package question
 import (
 	// standard library
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
-	"os"
 	"strconv"
 )
 
-func titleFromID(ID int) string {
+func titleFromID(ID int) (title string, err error) {
 	response, err := http.Get("https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q" + strconv.Itoa(ID) + "&format=json&languages=en&props=labels")
 	if err != nil {
-		fmt.Printf("%s", err)
-		os.Exit(1)
+		log.Printf("Error calling Wikidata API: %v", err)
+		return
 	} else {
 		defer response.Body.Close()
-		body, err := ioutil.ReadAll(response.Body)
-		if err != nil {
-			fmt.Printf("%s", err)
-			os.Exit(1)
+		body, e := ioutil.ReadAll(response.Body)
+		if e != nil {
+			log.Printf("Error reading Wikidata response: %v", err)
+			return
 		}
-
-		value := make(map[string]interface{})
-
-		err = json.Unmarshal(body, &value)
-		if err != nil {
-			fmt.Println(err)
+		responseMap := make(map[string]interface{})
+		e = json.Unmarshal(body, &responseMap)
+		if e != nil {
+			log.Printf("Error unmarshaling Wikidata title: %v", err)
+			return
 		}
-		return (((value["entities"]).(map[string]interface{})["Q"+strconv.Itoa(ID)]).(map[string]interface{})["labels"]).(map[string]interface{})["en"].(map[string]interface{})["value"].(string)
+		title = (((responseMap["entities"]).(map[string]interface{})["Q"+strconv.Itoa(ID)]).(map[string]interface{})["labels"]).(map[string]interface{})["en"].(map[string]interface{})["value"].(string)
 	}
-
-	return ""
+	return
 }

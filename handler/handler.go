@@ -1,21 +1,26 @@
 package handler
 
 import (
+	// standard library
 	"encoding/json"
-	"github.com/FraBle/WikidataQuiz/arduino"
-	"github.com/FraBle/WikidataQuiz/question"
-	"github.com/gorilla/mux"
 	"io/ioutil"
 	"log"
-	"math/rand"
 	"net/http"
+
+	// external packages
+	"github.com/gorilla/mux"
+
+	// internal packages
+	"github.com/FraBle/WikidataQuiz/arduino"
+	"github.com/FraBle/WikidataQuiz/question"
+	"github.com/FraBle/WikidataQuiz/utility"
 )
 
 // The HomeHandler returns the index.html
 func HomeHandler(rw http.ResponseWriter, req *http.Request) {
 	body, err := ioutil.ReadFile("../src/github.com/FraBle/WikidataQuiz/static/html/index.html")
 	if err != nil {
-		log.Printf("%v", err)
+		log.Printf("Error reading index.html: %v", err)
 	}
 	rw.Write(body)
 }
@@ -26,19 +31,35 @@ func QuestionHandler(rw http.ResponseWriter, req *http.Request) {
 		response []byte
 		err      error
 	)
-	switch rand.Intn(3) {
+	switch utility.Random(0, 3) {
 	case 0:
-		response, err = json.Marshal(question.CapitalQuestion())
+		q, err := question.CapitalQuestion()
+		if err != nil {
+			log.Printf("Error creating capital question", err)
+		} else {
+			response, err = json.Marshal(&q)
+		}
 	case 1:
-		response, err = json.Marshal(question.NobelPrizeWinnersQuestion())
+		q, err := question.NobelPrizeWinnersQuestion()
+		if err != nil {
+			log.Printf("Error creating nobel prize winner question", err)
+		} else {
+			response, err = json.Marshal(&q)
+		}
 	case 2:
 		q, err := question.WorldCupQuestion()
 		if err != nil {
 			log.Printf("Error creating world cup question", err)
+
 			// use capital question as fall-back if dbpedia errored (time-out...)
-			response, err = json.Marshal(question.CapitalQuestion())
+			q, err = question.CapitalQuestion()
+			if err != nil {
+				log.Printf("Error creating capital question", err)
+			} else {
+				response, err = json.Marshal(&q)
+			}
 		} else {
-			response, err = json.Marshal(q)
+			response, err = json.Marshal(&q)
 		}
 	}
 	if err != nil {

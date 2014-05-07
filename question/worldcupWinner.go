@@ -1,24 +1,28 @@
 package question
 
 import (
-	"github.com/FraBle/WikidataQuiz/model"
-	"math/rand"
+	// standard library
 	"strconv"
+
+	// internal packages
+	"github.com/FraBle/WikidataQuiz/model"
+	"github.com/FraBle/WikidataQuiz/utility"
 )
 
-func WorldCupQuestion() (result *model.Question, err error) {
+// WorldCupQuestion() generates a question about the winner of the world cup in a chosen year.
+func WorldCupQuestion() (result model.Question, err error) {
 	q := `PREFIX dbpedia2: <http://dbpedia.org/property/>
 SELECT COUNT(DISTINCT ?t)
 WHERE {
   ?t dbpedia2:tourneyName ?name .
   FILTER (STR(?name) = "FIFA World Cup")
 }`
-	offsetResult, err := query(q)
+	offsetResult, err := utility.Query(q)
 	if err != nil {
 		return
 	}
-	count := getCount(offsetResult)
-	offset := rand.Intn(count)
+	count := utility.GetCount(offsetResult)
+	offset := utility.Random(0, count)
 	q = `PREFIX dbpedia2: <http://dbpedia.org/property/>
 SELECT ?year ?first ?second ?third ?fourth
 WHERE {
@@ -32,7 +36,7 @@ WHERE {
 }
 LIMIT 1
 OFFSET ` + strconv.Itoa(offset)
-	results, err := query(q)
+	results, err := utility.Query(q)
 	if err != nil {
 		return
 	}
@@ -43,9 +47,8 @@ OFFSET ` + strconv.Itoa(offset)
 	fourth := results.Results.Bindings[0]["fourth"].Value
 	list := [...]string{second, third, fourth}
 
-	indexes := fourRandomNumbersIn(4)
+	indexes := utility.FourRandomNumbersIn(4)
 	result.RightAnswer = indexes[0]
-	// result.Answers =  make([]string, 4)
 	result.Answers[indexes[0]] = first
 	for i := 1; i < 4; i++ {
 		result.Answers[indexes[i]] = list[i-1]

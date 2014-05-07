@@ -1,12 +1,15 @@
 package question
 
 import (
+	// standard library
 	"encoding/json"
-	"fmt"
-	"github.com/FraBle/WikidataQuiz/model"
 	"io/ioutil"
-	"math/rand"
+	"log"
 	"net/http"
+
+	// internal packages
+	"github.com/FraBle/WikidataQuiz/model"
+	"github.com/FraBle/WikidataQuiz/utility"
 )
 
 type countryCapitalResponse struct {
@@ -22,37 +25,48 @@ type countryCapitalResponse struct {
 	}
 }
 
-var countryIDs []int
-var capitalIDs []int
+func CapitalQuestion() (result model.Question, err error) {
+	countryIDs, capitalIDs, err := getCountryCapitalIDs()
+	if err != nil {
+		return
+	}
 
-func CapitalQuestion() *model.Question {
-	result := new(model.Question)
+	indexes := utility.FourRandomNumbersIn(len(countryIDs))
 
-	getCountryCapitalIDs()
+	result.RightAnswer = utility.Random(0, 4)
 
-	indexes := fourRandomNumbersIn(len(countryIDs))
+	country, err := titleFromID(countryIDs[indexes[result.RightAnswer]])
+	if err != nil {
+		log.Printf("Error getting country title: %v", err)
+		return
+	}
 
-	result.RightAnswer = rand.Intn(4)
+	result.Phrase = "What is the capital of " + country + "?"
 
-	result.Phrase = "What is the capital of " + titleFromID(countryIDs[indexes[result.RightAnswer]]) + "?"
-	result.Answers = [4]string{titleFromID(capitalIDs[indexes[0]]),
-		titleFromID(capitalIDs[indexes[1]]),
-		titleFromID(capitalIDs[indexes[2]]),
-		titleFromID(capitalIDs[indexes[3]])}
-	return result
+	for i, val := range indexes {
+		capital, e := titleFromID(capitalIDs[val])
+		if e != nil {
+			log.Printf("Error getting capital title: %v", err)
+			return result, e
+		}
+		result.Answers[i] = capital
+	}
+
+	return
 }
 
-func getCountryCapitalIDs() {
+func getCountryCapitalIDs() (countryIDs, capitalIDs []int, err error) {
 	resp, err := http.Get("http://wdq.wmflabs.org/api?q=claim[31:(tree[6256][][279])]&props=36")
 	if err != nil {
-		// handle error
+		log.Printf("Error calling wmflabs API: %v", err)
+		return
 	}
 	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
 	var items countryCapitalResponse
 	if err := json.Unmarshal(body, &items); err != nil {
-		fmt.Println("error:", err)
+		log.Printf("Error unmarshaling wmflabs response: %v", err)
 	}
 
 	actualItems := items.Props.P36
@@ -61,4 +75,5 @@ func getCountryCapitalIDs() {
 		countryIDs = append(countryIDs, int(actualItems[i].([]interface{})[0].(float64)))
 		capitalIDs = append(capitalIDs, int(actualItems[i].([]interface{})[2].(float64)))
 	}
+	return
 }

@@ -1,13 +1,17 @@
 package question
 
 import (
+	//standard library
 	"encoding/json"
 	"fmt"
-	"github.com/FraBle/WikidataQuiz/model"
 	"io/ioutil"
-	"math/rand"
+	"log"
 	"net/http"
 	"strconv"
+
+	// internal packages
+	"github.com/FraBle/WikidataQuiz/model"
+	"github.com/FraBle/WikidataQuiz/utility"
 )
 
 type peopleDeathDateResponse struct {
@@ -26,19 +30,16 @@ type peopleDeathDateResponse struct {
 // TODO: start date and end data saved in variable/ constant
 
 // NobelPrizeWinnersQuestion() generates a question about the death date of a nobel prize winner who died after 2000.
-func NobelPrizeWinnersQuestion() *model.Question {
-	result := new(model.Question)
-
+func NobelPrizeWinnersQuestion() (result model.Question, err error) {
 	deathYears, peopleIDs := getPeopleIDsAndDeathYears()
+	selectedPersonIndex := utility.Random(0, len(peopleIDs))
 
-	selectedPersonIndex := rand.Intn(len(peopleIDs))
-
-	result.RightAnswer = rand.Intn(4)
+	result.RightAnswer = utility.Random(0, 4)
 	var answers [4]string
 
 	answers[result.RightAnswer] = strconv.Itoa(deathYears[selectedPersonIndex])
 
-	offsets := fourRandomNumbersIn(15) // one number not used
+	offsets := utility.FourRandomNumbersIn(15) // one number not used
 
 	for i := 0; i < 3; i++ {
 		newAnswer := 2000 + offsets[i]
@@ -54,9 +55,15 @@ func NobelPrizeWinnersQuestion() *model.Question {
 	}
 
 	result.Answers = answers
-	result.Phrase = "When did Nobel prize winner " + titleFromID(peopleIDs[selectedPersonIndex]) + " die?"
 
-	return result
+	person, err := titleFromID(peopleIDs[selectedPersonIndex])
+	if err != nil {
+		log.Printf("Error getting nobel prize winner title: %v", err)
+		return
+	}
+	result.Phrase = "When did Nobel prize winner " + person + " die?"
+
+	return
 }
 
 func getPeopleIDsAndDeathYears() (deathYears []int, peopleIDs []int) {
