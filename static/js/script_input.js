@@ -230,7 +230,7 @@ function drawHand() {
             var fingerPos = leapToScene(finger.tipPosition);
 
             // ##First## Draw the Connection
-            c.strokeStyle = "#FFA040";
+            c.strokeStyle = "rgba(255,138,0,0.5)";
             c.lineWidth = 3;
             c.beginPath();
             c.moveTo(handPos[0], handPos[1]);
@@ -239,17 +239,17 @@ function drawHand() {
             c.stroke();
 
             // ##Second## Draw the Finger
-            c.strokeStyle = "#39AECF";
-            c.lineWidth = 5;
+            c.strokeStyle = "rgba(255,138,0,1)";
+            c.lineWidth = 3;
             c.beginPath();
             c.arc(fingerPos[0], fingerPos[1], 20, 0, Math.PI * 2);
             c.closePath();
             c.stroke();
         }
         // ##Third## draw the hand
-        c.fillStyle = "#FF5A40";
+        c.fillStyle = "rgba(255,138,0,1)";
         c.beginPath();
-        c.arc(handPos[0], handPos[1], 40, 0, Math.PI * 2);
+        c.arc(handPos[0], handPos[1], 20, 0, Math.PI * 2);
         c.closePath();
         c.fill();
     }

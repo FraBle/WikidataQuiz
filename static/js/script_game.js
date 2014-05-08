@@ -1,3 +1,4 @@
+var infiniteQuestions = true;
 var questionCount = 10;
 var questions;
 var currentQuestionIndex = -1;
@@ -72,25 +73,32 @@ function showNextQuestion() {
     resetVisualizations();
 
     currentQuestionIndex += 1;
-    if (questions.length < questionCount) {
-        // Preload next question
+
+    if (infiniteQuestions) {
         getNextQuestion();
-    }
-    if (currentQuestionIndex > questions.length - 1) {
-        var message = questionCount + " of " + questionCount + " questions answered, ";
-        if (players[0].correct > players[1].correct) {
-            message += "Player 1 ";
-        } else if (players[0].correct < players[1].correct) {
-            message += "Player 2 ";
-        } else {
-            "No one ";
-        }
-        message += "won the game!";
-        alert(message);
-    } else {
-        // Show next question
         showQuestion(questions[currentQuestionIndex]);
-    }
+        questionCount = currentQuestionIndex + 1;
+    } else {
+        if (questions.length < questionCount) {
+            // Preload next question
+            getNextQuestion();
+        }
+        if (currentQuestionIndex > questions.length - 1) {
+            var message = questionCount + " of " + questionCount + " questions answered, ";
+            if (players[0].correct > players[1].correct) {
+                message += "Player 1 ";
+            } else if (players[0].correct < players[1].correct) {
+                message += "Player 2 ";
+            } else {
+                "No one ";
+            }
+            message += "won the game!";
+            alert(message);
+        } else {
+            // Show next question
+            showQuestion(questions[currentQuestionIndex]);
+        }
+    }    
 }
 
 function showQuestion(question) {
